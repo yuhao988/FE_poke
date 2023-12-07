@@ -1,0 +1,14 @@
+.class-modal {
+  display: flex;
+  flex-direction: column; /* To arrange child elements vertically */
+  align-items: center; /* To center the content vertically */
+  justify-content: center;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  flex-direction: row; /* To arrange child elements horizontally */
+  justify-content: space-around; /* To add space between items */
+  margin-top: 10px; /* Optional: Add margin for spacing */
+}

@@ -17,7 +17,8 @@ export default function Classes() {
   };
 
   return (
-    <div>
+    <div className="App">
+      <div className="App-header">
       {Object.keys(ClassStat).map((classKey) => (
         <div key={classKey}>
           <div>
@@ -33,7 +34,7 @@ export default function Classes() {
             />
           )}
         </div>
-      ))}
+      ))}</div>
     </div>
   );
 }
