@@ -5,7 +5,7 @@ import "./App.css";
 import Error from "./Error";
 import Home from "./Home";
 import Battle from "./Components/Battle";
-import Classes from "./Components/Classes";
+import Classes from "./Components/Classes/Classes";
 import Equipment from "./Components/Equipment";
 
 
