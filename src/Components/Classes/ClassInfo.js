@@ -1,6 +1,8 @@
 import Modal from "react-modal";
 import React, { useState } from "react";
 import "./Classes";
+import { levelUp } from "../Battle/Calculations";
+
 
 export default function ClassInfo(props) {
   const { isOpen, onClose, classDetail } = props;
@@ -44,27 +46,19 @@ export default function ClassInfo(props) {
     setLevel(parseInt(event.target.value, 10));
   };
 
-  const levelUp = (stat, growth) => {
-    for (let i = 1; i < level; i++) {
-      const randNum = Math.random();
-      if (randNum < growth) {
-        stat++;
-      }
-    }
-    return stat;
-  };
-  const charHP = levelUp(classDetail.HP, classDetail.HpGrowth);
+ 
+  const charHP = levelUp(classDetail.HP,level, classDetail.HpGrowth);
   let charAtk;
   if (classDetail.Strength) {
-    charAtk = levelUp(classDetail.Strength, classDetail.StrGrowth);
+    charAtk = levelUp(classDetail.Strength, level,classDetail.StrGrowth);
   } else if (classDetail.Magic) {
-    charAtk = levelUp(classDetail.Magic, classDetail.MagGrowth);
+    charAtk = levelUp(classDetail.Magic, level,classDetail.MagGrowth);
   }
-  const charSkl = levelUp(classDetail.Skill, classDetail.SklGrowth);
-  const charSpd = levelUp(classDetail.Speed, classDetail.SpdGrowth);
-  const charLck = levelUp(classDetail.Luck, classDetail.LckGrowth);
-  const charDef = levelUp(classDetail.Defence, classDetail.DefGrowth);
-  const charRes = levelUp(classDetail.Resistance, classDetail.ResGrowth);
+  const charSkl = levelUp(classDetail.Skill, level,classDetail.SklGrowth);
+  const charSpd = levelUp(classDetail.Speed, level,classDetail.SpdGrowth);
+  const charLck = levelUp(classDetail.Luck,level, classDetail.LckGrowth);
+  const charDef = levelUp(classDetail.Defence,level, classDetail.DefGrowth);
+  const charRes = levelUp(classDetail.Resistance, level,classDetail.ResGrowth);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>

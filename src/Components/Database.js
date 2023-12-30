@@ -380,7 +380,7 @@ export const EquipStat = {
     Critical_rate: 10,
     Double_might: [],
   },
-  17: {
+  18: {
     Name: "Waterfall",
     Classes: ["Water Pirate"],
     Durability: 15,
@@ -392,7 +392,7 @@ export const EquipStat = {
     Critical_rate: 5,
     Double_might: [],
   },
-  18: {
+  19: {
     Name: "Ember",
     Classes: ["Fire Mage"],
     Durability: 40,
@@ -404,7 +404,7 @@ export const EquipStat = {
     Critical_rate: 5,
     Double_might: [],
   },
-  19: {
+  20: {
     Name: "Flamethrower",
     Classes: ["Fire Mage"],
     Durability: 30,
@@ -416,7 +416,7 @@ export const EquipStat = {
     Critical_rate: 5,
     Double_might: [],
   },
-  20: {
+  21: {
     Name: "Fire Blast",
     Classes: ["Fire Mage"],
     Durability: 20,
@@ -428,7 +428,7 @@ export const EquipStat = {
     Critical_rate: 5,
     Double_might: [],
   },
-  21: {
+  22: {
     Name: "Thunder Shock",
     Classes: ["Electric Mage"],
     Durability: 40,
@@ -440,7 +440,7 @@ export const EquipStat = {
     Critical_rate: 5,
     Double_might: [],
   },
-  22: {
+  23: {
     Name: "Thunderbolt",
     Classes: ["Electric Mage"],
     Durability: 30,
@@ -452,7 +452,7 @@ export const EquipStat = {
     Critical_rate: 0,
     Double_might: [],
   },
-  23: {
+  24: {
     Name: "Thunder",
     Classes: ["Electric Mage"],
     Durability: 20,
@@ -464,7 +464,7 @@ export const EquipStat = {
     Critical_rate: 0,
     Double_might: [],
   },
-  24: {
+  25: {
     Name: "Powder Snow",
     Classes: ["Ice Mage"],
     Durability: 40,
@@ -476,7 +476,7 @@ export const EquipStat = {
     Critical_rate: 0,
     Double_might: [],
   },
-  25: {
+  26: {
     Name: "Ice Beam",
     Classes: ["Fire Mage"],
     Durability: 30,
@@ -488,7 +488,7 @@ export const EquipStat = {
     Critical_rate: 0,
     Double_might: [],
   },
-  26: {
+  27: {
     Name: "Blizzard",
     Classes: ["Ice Mage"],
     Durability: 20,
@@ -499,5 +499,5 @@ export const EquipStat = {
     Hit_rate: 70,
     Critical_rate: 5,
     Double_might: [],
-  }
+  },
 };

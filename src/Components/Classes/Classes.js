@@ -1,4 +1,5 @@
 import { ClassStat } from "../Database";
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import ClassInfo from "./ClassInfo";
 
@@ -34,7 +35,9 @@ export default function Classes() {
             />
           )}
         </div>
-      ))}</div>
+      ))}
+      <Link to="/">Back</Link>
+      </div>
     </div>
   );
 }

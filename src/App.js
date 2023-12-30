@@ -4,7 +4,7 @@ import Modal from "react-modal"; // Import the Modal component
 import "./App.css";
 import Error from "./Error";
 import Home from "./Home";
-import Battle from "./Components/Battle";
+import Battle from "./Components/Battle/Battle";
 import Classes from "./Components/Classes/Classes";
 import Equipment from "./Components/Equipment";
 
