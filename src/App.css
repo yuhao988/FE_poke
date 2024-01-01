@@ -53,3 +53,15 @@ width:40%;
 .info-box:last-child {
   margin-left: auto; /* Push the first box to the left */
 }
+
+.battle-result-line {
+  display: flex;
+  justify-content: space-around;
+}
+/* .battle-result{
+  position: absolute;
+
+} */
+.unit-info {
+  margin-right: 10px; /* Adjust the margin as needed */
+}

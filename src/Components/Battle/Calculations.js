@@ -21,7 +21,7 @@ function SuperEffectiveMultiplier(weapon, target) {
 function Damage(attack, weapon, target) {
   const multiplier = SuperEffectiveMultiplier(weapon, target);
   const dmg = attack + weapon.Might * multiplier;
-//console.log(multiplier)
+  //console.log(multiplier)
   return dmg;
 }
 
@@ -69,4 +69,12 @@ export function leveledChar(character, level) {
     Resistance: charRes,
   };
   return levelChar;
+}
+
+export function outputText(attacker) {
+  if (attacker === 1) {
+    return "Unit 1 attacks unit 2 and dealt 5 damage. ";
+  } else {
+    return "Unit 2 attacks unit 1 and dealt 50000 damage. ";
+  }
 }
