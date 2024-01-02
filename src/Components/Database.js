@@ -478,7 +478,7 @@ export const EquipStat = {
   },
   26: {
     Name: "Ice Beam",
-    Classes: ["Fire Mage"],
+    Classes: ["Ice Mage"],
     Durability: 30,
     Range_min: 1,
     Range_max: 2,

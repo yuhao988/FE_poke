@@ -30,7 +30,8 @@ export function getStatistics(Attacker, Defender, Weapon) {
   const avoid = avoidRate(Attacker.Speed, Weapon.Weight, Attacker.Luck);
   const crit = CritChance(Attacker.Skill, Weapon.Critical_rate);
   const dmg = Damage(Attacker.Attack, Weapon, Defender.Name);
-  const statArray = [hit, avoid, crit, dmg];
+  const critEvd = Attacker.Luck;
+  const statArray = [hit, avoid, crit, dmg, critEvd];
   return statArray;
 }
 
@@ -71,10 +72,45 @@ export function leveledChar(character, level) {
   return levelChar;
 }
 
-export function outputText(attacker) {
-  if (attacker === 1) {
-    return "Unit 1 attacks unit 2 and dealt 5 damage. ";
-  } else {
-    return "Unit 2 attacks unit 1 and dealt 50000 damage. ";
+export function outputText(init, damage, hit, crit, effective) {
+  let randNum = Math.random() * 100;
+  if (init === 1) {
+    if (randNum < hit) {
+      randNum = Math.random() * 100;
+      if (randNum < crit) {
+        return [
+          `Unit 1 lands critical hit on unit 2! Unit 1 deals ${damage * 3} damage. `,
+          true,
+          true,
+        ];
+      } else {
+        return [
+          `Unit 1 attacks unit 2 and dealt ${damage} damage. `,
+          true,
+          false,
+        ];
+      }
+    } else {
+      return [`Unit 1 attacks unit 2 and missed. `, false, false];
+    }
+  } else if (init === 2) {
+    if (randNum < hit) {
+      randNum = Math.random() * 100;
+      if (randNum < crit) {
+        return [
+          `Unit 2 lands critical hit on unit 1! Unit 2 deals ${damage * 3} damage. `,
+          true,
+          true,
+        ];
+      } else {
+        return [
+          `Unit 2 attacks unit 1 and dealt ${damage} damage. `,
+          true,
+          false,
+        ];
+      }
+    } else {
+      return [`Unit 2 attacks unit 1 and missed. `, false, false];
+    };
   }
 }
