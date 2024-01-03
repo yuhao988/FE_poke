@@ -60,12 +60,26 @@ export default function Battle() {
     setWeaponID2(event.target.value);
   };
 
+  const [result, setResult] = useState([]);
+
   const stat1 = Calculation.getStatistics(char1, char2, EquipStat[weaponID1]);
   const stat2 = Calculation.getStatistics(char2, char1, EquipStat[weaponID2]);
   let dmg1 = 0;
   let dmg2 = 0;
   const isDouble1 = detDouble(atkSpd1, atkSpd2);
+  let hitCount1 = null;
+  if (isDouble1 && (weaponID1 === "10" || weaponID1 === "16")) {
+    hitCount1 = "x4";
+  } else if (isDouble1 || weaponID1 === "10" || weaponID1 === "16") {
+    hitCount1 = "x2";
+  }
   const isDouble2 = detDouble(atkSpd2, atkSpd1);
+  let hitCount2 = null;
+  if (isDouble2 && (weaponID2 === "10" || weaponID2 === "16")) {
+    hitCount2 = "x4";
+  } else if (isDouble2 || weaponID2 === "10" || weaponID2 === "16") {
+    hitCount2 = "x2";
+  }
 
   if (ClassStat[classID1].Strength) {
     dmg1 = stat1[3] - char2.Defence;
@@ -124,107 +138,161 @@ export default function Battle() {
     crit2 = stat2[2] - stat1[4];
   }
 
-  let remainHp1 = char1.HP;
-  let remainHp2 = char2.HP;
-  let outputText = [];
-
-  while (remainHp1 > 0 && remainHp2 > 0) {
-    let [battleResult, isHit, isCrit] = Calculation.outputText(
-      1,
-      dmg1,
-      hit1,
-      crit1
-    );
+  const getHP = (hp, isHit, dmg, isCrit) => {
     if (isCrit) {
-      remainHp2 -= dmg1 * 3;
+      hp -= dmg * 3;
     } else if (isHit && !isCrit) {
-      remainHp2 -= dmg1;
+      hp -= dmg;
     }
-    if (remainHp2 < 0) {
-      remainHp2 = 0;
+    if (hp < 0) {
+      hp = 0;
     }
-    outputText.push(
-      <div key={outputText.length} className="battle-result-line">
+    return hp;
+  };
+  const pushText = (originalText, hp1, hp2, resultText) => {
+    originalText.push(
+      <div key={originalText.length} className="battle-result-line">
+        <div className="unit-info">Unit 1: {hp1}</div>
+        <div className="battle-result">{resultText}</div>
+        <div className="unit-info">Unit 2: {hp2}</div>
+      </div>
+    );
+    return originalText;
+  };
+
+  const fullResult = () => {
+    let remainHp1 = char1.HP;
+    let remainHp2 = char2.HP;
+    let tempResult = [];
+    tempResult.push(
+      <div key={tempResult.length} className="battle-result-line">
         <div className="unit-info">Unit 1: {remainHp1}</div>
-        <div className="battle-result">{battleResult}</div>
+        <div className="battle-result">Battle Start!</div>
         <div className="unit-info">Unit 2: {remainHp2}</div>
       </div>
     );
-    if (remainHp2 > 0 && isDouble1) {
-      [battleResult, isHit, isCrit] = Calculation.outputText(
+    let i = 0;
+    while (remainHp1 > 0 && remainHp2 > 0) {
+      let [battleResult, isHit, isCrit] = Calculation.outputText(
         1,
         dmg1,
         hit1,
         crit1
       );
-      if (isCrit) {
-        remainHp2 -= dmg1 * 3;
-      } else if (isHit && !isCrit) {
-        remainHp2 -= dmg1;
+      remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+      tempResult = pushText(tempResult, remainHp1, remainHp2, battleResult);
+      if (remainHp2 > 0 && isDouble1) {
+        [battleResult, isHit, isCrit] = Calculation.outputText(
+          1,
+          dmg1,
+          hit1,
+          crit1
+        );
+        remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+        tempResult = pushText(tempResult, remainHp1, remainHp2, battleResult);
       }
-      if (remainHp2 < 0) {
-        remainHp2 = 0;
+      if (weaponID1 === "10" || weaponID1 === "16") {
+        if (remainHp2 > 0) {
+          [battleResult, isHit, isCrit] = Calculation.outputText(
+            1,
+            dmg1,
+            hit1,
+            crit1
+          );
+          remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+          tempResult = pushText(tempResult, remainHp1, remainHp2, battleResult);
+          if (remainHp2 > 0 && isDouble1) {
+            [battleResult, isHit, isCrit] = Calculation.outputText(
+              1,
+              dmg1,
+              hit1,
+              crit1
+            );
+            remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+            tempResult = pushText(
+              tempResult,
+              remainHp1,
+              remainHp2,
+              battleResult
+            );
+          }
+        }
       }
-      outputText.push(
-        <div key={outputText.length} className="battle-result-line">
-          <div className="unit-info">Unit 1: {remainHp1}</div>
-          <div className="battle-result">{battleResult}</div>
-          <div className="unit-info">Unit 2: {remainHp2}</div>
-        </div>
-      );
-    }
-    if (remainHp2 > 0) {
-      [battleResult, isHit, isCrit] = Calculation.outputText(
-        2,
-        dmg2,
-        hit2,
-        crit2
-      );
-      if (isCrit) {
-        remainHp1 -= dmg2 * 3;
-      } else if (isHit && !isCrit) {
-        remainHp1 -= dmg2;
-      }
-      if (remainHp1 < 0) {
-        remainHp1 = 0;
-      }
-      outputText.push(
-        <div key={outputText.length} className="battle-result-line">
-          <div className="unit-info">Unit 1: {remainHp1}</div>
-          <div className="battle-result">{battleResult}</div>
-          <div className="unit-info">Unit 2: {remainHp2}</div>
-        </div>
-      );
-      if (remainHp1 && isDouble2) {
+      if (remainHp2 > 0) {
         [battleResult, isHit, isCrit] = Calculation.outputText(
           2,
           dmg2,
           hit2,
           crit2
         );
-        if (isCrit) {
-          remainHp1 -= dmg2 * 3;
-        } else if (isHit && !isCrit) {
-          remainHp1 -= dmg2;
+        remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+        tempResult = pushText(tempResult, remainHp1, remainHp2, battleResult);
+        if (remainHp1 && isDouble2) {
+          [battleResult, isHit, isCrit] = Calculation.outputText(
+            2,
+            dmg2,
+            hit2,
+            crit2
+          );
+          remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+          tempResult = pushText(tempResult, remainHp1, remainHp2, battleResult);
         }
-        if (remainHp1 < 0) {
-          remainHp1 = 0;
+        if (weaponID2 === "10" || weaponID2 === "16") {
+          if (remainHp1 > 0) {
+            [battleResult, isHit, isCrit] = Calculation.outputText(
+              2,
+              dmg2,
+              hit1,
+              crit1
+            );
+            remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+            tempResult = pushText(
+              tempResult,
+              remainHp1,
+              remainHp2,
+              battleResult
+            );
+            if (remainHp1 > 0 && isDouble2) {
+              [battleResult, isHit, isCrit] = Calculation.outputText(
+                2,
+                dmg1,
+                hit1,
+                crit1
+              );
+              remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+              tempResult = pushText(
+                tempResult,
+                remainHp1,
+                remainHp2,
+                battleResult
+              );
+            }
+          }
         }
-        outputText.push(
-          <div key={outputText.length} className="battle-result-line">
-            <div className="unit-info">Unit 1: {remainHp1}</div>
-            <div className="battle-result">{battleResult}</div>
-            <div className="unit-info">Unit 2: {remainHp2}</div>
-          </div>
+      }
+      i++;
+      if (i >= 20) {
+        tempResult.push(
+          <div className="battle-result">The battle is a draw</div>
         );
+        break;
       }
     }
     if (remainHp1 === 0) {
-      outputText.push(<div className="battle-result">Unit 2 wins!</div>);
+      tempResult.push(
+        <div className="battle-result">
+          Unit 2 ({ClassStat[classID2].Name})wins!
+        </div>
+      );
     } else if (remainHp2 === 0) {
-      outputText.push(<div className="battle-result">Unit 1 wins!</div>);
+      tempResult.push(
+        <div className="battle-result">
+          Unit 1 ({ClassStat[classID1].Name})wins!
+        </div>
+      );
     }
-  }
+    setResult(tempResult);
+  };
 
   return (
     <div>
@@ -265,17 +333,10 @@ export default function Battle() {
             </li>
             <li>HP: {char1.HP}</li>
             <li>
-              Attack:{dmg1} {isDouble1 ? `x2` : null}
+              Attack:{dmg1} {hitCount1}
             </li>
-            {/* {ClassStat[classID2].Strength ? (
-              <li>Defence: {char1.Defence}</li>
-            ) : (
-              <li>Defence: {char1.Resistance}</li>
-            )}
-            <li>Attack Speed: {atkSpd1}</li> */}
             <li>Hitrate: {hit1}</li>
             <li>Crit Chance: {crit1}</li>
-            {/* <li>Avoid: {stat1[1]}</li> */}
           </ul>
         </div>
         <div className="info-box">
@@ -313,22 +374,18 @@ export default function Battle() {
             </li>
             <li>HP: {char2.HP}</li>
             <li>
-              Attack:{dmg2} {isDouble2 ? `x2` : null}
+              Attack:{dmg2} {hitCount2}
             </li>
-            {/* {ClassStat[classID1].Strength ? (
-              <li>Defence: {char2.Defence}</li>
-            ) : (
-              <li>Defence: {char2.Resistance}</li>
-            )} */}
-            {/* <li>Attack Speed: {atkSpd2}</li> */}
             <li>Hitrate: {hit2}</li>
             <li>Crit Chance: {crit2}</li>
-            {/* <li>Avoid: {stat2[1]}</li> */}
           </ul>
         </div>
         <br />
       </div>
-      <div className="battle-proceeding">{outputText}</div>
+      {result}
+      <div className="battle-proceeding">
+        <button onClick={fullResult}>Start</button>
+      </div>
       <Link to="/">Back</Link>
     </div>
   );
