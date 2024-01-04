@@ -31,7 +31,7 @@ export default function Battle() {
   const equippable1 = filterEquip(classID1);
   const w1 = equippable1[0].key;
   const [weaponID1, setWeaponID1] = useState(w1);
-  const char1 = Calculation.leveledChar(ClassStat[classID1], level1);
+  const char1 = Calculation.leveledCharAve(ClassStat[classID1], level1);
   const atkSpd1 = char1.Speed - EquipStat[weaponID1].Weight;
   const handleClassChange1 = (event) => {
     setClassID1(event.target.value);
@@ -48,7 +48,7 @@ export default function Battle() {
   const equippable2 = filterEquip(classID2);
   const w2 = equippable2[0].key;
   const [weaponID2, setWeaponID2] = useState(w2);
-  const char2 = Calculation.leveledChar(ClassStat[classID2], level2);
+  const char2 = Calculation.leveledCharAve(ClassStat[classID2], level2);
   const atkSpd2 = char2.Speed - EquipStat[weaponID2].Weight;
   const handleClassChange2 = (event) => {
     setClassID2(event.target.value);
@@ -61,11 +61,14 @@ export default function Battle() {
   };
 
   const [result, setResult] = useState([]);
+  const [winRatio, setWinRatio] = useState([]);
 
   const stat1 = Calculation.getStatistics(char1, char2, EquipStat[weaponID1]);
   const stat2 = Calculation.getStatistics(char2, char1, EquipStat[weaponID2]);
-  let dmg1 = 0;
-  let dmg2 = 0;
+  let dmg1 = stat1[3];
+  let dmg2 = stat2[3];
+  let hit1 = stat1[0] - stat2[1];
+  let hit2 = stat2[0] - stat1[1];
   const isDouble1 = detDouble(atkSpd1, atkSpd2);
   let hitCount1 = null;
   if (isDouble1 && (weaponID1 === "10" || weaponID1 === "16")) {
@@ -80,45 +83,41 @@ export default function Battle() {
   } else if (isDouble2 || weaponID2 === "10" || weaponID2 === "16") {
     hitCount2 = "x2";
   }
-
+  
   if (ClassStat[classID1].Strength) {
-    dmg1 = stat1[3] - char2.Defence;
+    dmg1 = dmg1 - char2.Defence;
     if (dmg1 < 0) {
       dmg1 = 0;
     }
   } else {
-    dmg1 = stat1[3] - char2.Resistance;
+    dmg1 = dmg1 - char2.Resistance;
     if (dmg1 < 0) {
       dmg1 = 0;
     }
   }
+  
   if (ClassStat[classID2].Strength) {
-    dmg2 = stat2[3] - char1.Defence;
+    dmg2 = dmg2 - char1.Defence;
     if (dmg2 < 0) {
       dmg2 = 0;
     }
   } else {
-    dmg2 = stat2[3] - char1.Resistance;
+    dmg2 = dmg2 - char1.Resistance;
     if (dmg2 < 0) {
       dmg2 = 0;
     }
   }
 
-  let hit1 = 0;
-  if (stat1[0] - stat2[1] > 100) {
+  if (hit1 > 100) {
     hit1 = 100;
-  } else if (stat1[0] - stat2[1] < 0) {
+  } else if (hit1 < 0) {
     hit1 = 0;
-  } else {
-    hit1 = stat1[0] - stat2[1];
   }
-  let hit2 = 0;
-  if (stat2[0] - stat1[1] > 100) {
+
+  if (hit2 > 100) {
     hit2 = 100;
-  } else if (stat2[0] - stat1[1] < 0) {
+  } else if (hit2 < 0) {
     hit2 = 0;
-  } else {
-    hit2 = stat2[0] - stat1[1];
   }
 
   let crit1 = 0;
@@ -293,7 +292,116 @@ export default function Battle() {
     }
     setResult(tempResult);
   };
+  const tallyResults = () => {
+    let u1w = 0;
+    let u2w = 0;
+    for (let c = 0; c < 1000; c++) {
+      let remainHp1 = char1.HP;
+      let remainHp2 = char2.HP;
+      let i = 0;
+      while (remainHp1 > 0 && remainHp2 > 0) {
+        let [battleResult, isHit, isCrit] = Calculation.outputText(
+          1,
+          dmg1,
+          hit1,
+          crit1
+        );
+        remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
 
+        if (remainHp2 > 0 && isDouble1) {
+          [battleResult, isHit, isCrit] = Calculation.outputText(
+            1,
+            dmg1,
+            hit1,
+            crit1
+          );
+          remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+        }
+        if (weaponID1 === "10" || weaponID1 === "16") {
+          if (remainHp2 > 0) {
+            [battleResult, isHit, isCrit] = Calculation.outputText(
+              1,
+              dmg1,
+              hit1,
+              crit1
+            );
+            remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+
+            if (remainHp2 > 0 && isDouble1) {
+              [battleResult, isHit, isCrit] = Calculation.outputText(
+                1,
+                dmg1,
+                hit1,
+                crit1
+              );
+              remainHp2 = getHP(remainHp2, isHit, dmg1, isCrit);
+            }
+          }
+        }
+        if (remainHp2 > 0) {
+          [battleResult, isHit, isCrit] = Calculation.outputText(
+            2,
+            dmg2,
+            hit2,
+            crit2
+          );
+          remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+
+          if (remainHp1 && isDouble2) {
+            [battleResult, isHit, isCrit] = Calculation.outputText(
+              2,
+              dmg2,
+              hit2,
+              crit2
+            );
+            remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+          }
+          if (weaponID2 === "10" || weaponID2 === "16") {
+            if (remainHp1 > 0) {
+              [battleResult, isHit, isCrit] = Calculation.outputText(
+                2,
+                dmg2,
+                hit1,
+                crit1
+              );
+              remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+
+              if (remainHp1 > 0 && isDouble2) {
+                [battleResult, isHit, isCrit] = Calculation.outputText(
+                  2,
+                  dmg1,
+                  hit1,
+                  crit1
+                );
+                remainHp1 = getHP(remainHp1, isHit, dmg2, isCrit);
+              }
+            }
+          }
+        }
+        i++;
+        if (i >= 20) {
+          break;
+        }
+      }
+      if (remainHp1 === 0) {
+        u2w++;
+      } else if (remainHp2 === 0) {
+        u1w++;
+      }
+    }
+    let ratio = [];
+    ratio.push(
+      <div className="battle-result">
+        Unit 1 ({ClassStat[classID1].Name}) has won {u1w} rounds
+      </div>
+    );
+    ratio.push(
+      <div className="battle-result">
+        Unit 2 ({ClassStat[classID2].Name}) has won {u2w} rounds
+      </div>
+    );
+    setWinRatio(ratio);
+  };
   return (
     <div>
       <div className="box-holder">
@@ -383,10 +491,12 @@ export default function Battle() {
         <br />
       </div>
       {result}
+      {winRatio}
       <div className="battle-proceeding">
         <button onClick={fullResult}>Start</button>
+        <button onClick={tallyResults}>Tally</button>
       </div>
-      <Link to="/">Back</Link>
+      {/* <Link to="/">Back</Link> */}
     </div>
   );
 }

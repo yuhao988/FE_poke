@@ -166,6 +166,7 @@ export const ClassStat = {
 export const EquipStat = {
   0: {
     Name: "Brick Break",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider"],
     Durability: 20,
     Range_min: 1,
@@ -178,6 +179,7 @@ export const EquipStat = {
   },
   1: {
     Name: "Knock Down",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 20,
     Range_min: 1,
@@ -190,6 +192,7 @@ export const EquipStat = {
   },
   2: {
     Name: "Dragon Claw",
+    Type: "Physical 2",
     Classes: ["Normal Soldier", "Steel Armor", "Water Pirate", "Dragonkind"],
     Durability: 20,
     Range_min: 1,
@@ -202,6 +205,7 @@ export const EquipStat = {
   },
   3: {
     Name: "Discharge",
+    Type:"Electric",
     Classes: ["Electric Mage"],
     Durability: 20,
     Range_min: 1,
@@ -214,6 +218,7 @@ export const EquipStat = {
   },
   4: {
     Name: "Burnout",
+    Type: "Fire",
     Classes: ["Fire Mage"],
     Durability: 20,
     Range_min: 1,
@@ -222,10 +227,11 @@ export const EquipStat = {
     Weight: 5,
     Hit_rate: 95,
     Critical_rate: 0,
-    Double_might: ["Fire Mage", "Electirc Mage", "Ice Mage"],
+    Double_might: ["Fire Mage", "Electric Mage", "Ice Mage"],
   },
   5: {
     Name: "Grass Knot",
+    Type:"Ice",
     Classes: ["Ice Mage"],
     Durability: 20,
     Range_min: 1,
@@ -238,6 +244,7 @@ export const EquipStat = {
   },
   6: {
     Name: "Tackle",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 45,
     Range_min: 1,
@@ -250,6 +257,7 @@ export const EquipStat = {
   },
   7: {
     Name: "Wing Attack",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 30,
     Range_min: 1,
@@ -262,6 +270,7 @@ export const EquipStat = {
   },
   8: {
     Name: "Slash",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 20,
     Range_min: 1,
@@ -274,6 +283,7 @@ export const EquipStat = {
   },
   9: {
     Name: "Iron Tail",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 20,
     Range_min: 1,
@@ -286,6 +296,7 @@ export const EquipStat = {
   },
   10: {
     Name: "Double Hit",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 30,
     Range_min: 1,
@@ -298,6 +309,7 @@ export const EquipStat = {
   },
   11: {
     Name: "High Horsepower",
+    Type: "Physical 1",
     Classes: ["Normal Soldier", "Steel Armor", "Ground Rider", "Flying Rider"],
     Durability: 15,
     Range_min: 1,
@@ -310,6 +322,7 @@ export const EquipStat = {
   },
   12: {
     Name: "Water Gun",
+    Type: "Physical 2",
     Classes: ["Water Pirate", "Dragonkind"],
     Durability: 45,
     Range_min: 1,
@@ -322,6 +335,7 @@ export const EquipStat = {
   },
   13: {
     Name: "Dragon Rage",
+    Type: "Physical 2",
     Classes: ["Water Pirate", "Dragonkind"],
     Durability: 30,
     Range_min: 1,
@@ -334,6 +348,7 @@ export const EquipStat = {
   },
   14: {
     Name: "Crabhammer",
+    Type: "Physical 2",
     Classes: ["Water Pirate", "Dragonkind"],
     Durability: 20,
     Range_min: 1,
@@ -346,6 +361,7 @@ export const EquipStat = {
   },
   15: {
     Name: "Water Shuriken",
+    Type: "Physical 2",
     Classes: ["Water Pirate", "Dragonkind"],
     Durability: 20,
     Range_min: 1,
@@ -358,6 +374,7 @@ export const EquipStat = {
   },
   16: {
     Name: "Dual Chop",
+    Type: "Physical 2",
     Classes: ["Dragonkind"],
     Durability: 30,
     Range_min: 1,
@@ -370,6 +387,7 @@ export const EquipStat = {
   },
   17: {
     Name: "Dragon Rush",
+    Type: "Physical 2",
     Classes: ["Dragonkind"],
     Durability: 15,
     Range_min: 1,
@@ -382,6 +400,7 @@ export const EquipStat = {
   },
   18: {
     Name: "Waterfall",
+    Type: "Physical 2",
     Classes: ["Water Pirate"],
     Durability: 15,
     Range_min: 1,
@@ -394,6 +413,7 @@ export const EquipStat = {
   },
   19: {
     Name: "Ember",
+    Type: "Fire",
     Classes: ["Fire Mage"],
     Durability: 40,
     Range_min: 1,
@@ -406,6 +426,7 @@ export const EquipStat = {
   },
   20: {
     Name: "Flamethrower",
+    Type: "Fire",
     Classes: ["Fire Mage"],
     Durability: 30,
     Range_min: 1,
@@ -418,6 +439,7 @@ export const EquipStat = {
   },
   21: {
     Name: "Fire Blast",
+    Type: "Fire",
     Classes: ["Fire Mage"],
     Durability: 20,
     Range_min: 1,
@@ -430,6 +452,7 @@ export const EquipStat = {
   },
   22: {
     Name: "Thunder Shock",
+    Type:"Electric",
     Classes: ["Electric Mage"],
     Durability: 40,
     Range_min: 1,
@@ -442,6 +465,7 @@ export const EquipStat = {
   },
   23: {
     Name: "Thunderbolt",
+    Type:"Electric",
     Classes: ["Electric Mage"],
     Durability: 30,
     Range_min: 1,
@@ -454,6 +478,7 @@ export const EquipStat = {
   },
   24: {
     Name: "Thunder",
+    Type:"Electric",
     Classes: ["Electric Mage"],
     Durability: 20,
     Range_min: 1,
@@ -466,6 +491,7 @@ export const EquipStat = {
   },
   25: {
     Name: "Powder Snow",
+    Type:"Ice",
     Classes: ["Ice Mage"],
     Durability: 40,
     Range_min: 1,
@@ -478,6 +504,7 @@ export const EquipStat = {
   },
   26: {
     Name: "Ice Beam",
+    Type:"Ice",
     Classes: ["Ice Mage"],
     Durability: 30,
     Range_min: 1,
@@ -490,6 +517,7 @@ export const EquipStat = {
   },
   27: {
     Name: "Blizzard",
+    Type:"Ice",
     Classes: ["Ice Mage"],
     Durability: 20,
     Range_min: 1,

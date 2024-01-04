@@ -26,10 +26,13 @@ function Damage(attack, weapon, target) {
 }
 
 export function getStatistics(Attacker, Defender, Weapon) {
-  const hit = HitRate(Weapon.Hit_rate, Attacker.Skill, Attacker.Luck);
+  let hit = HitRate(Weapon.Hit_rate, Attacker.Skill, Attacker.Luck);
   const avoid = avoidRate(Attacker.Speed, Weapon.Weight, Attacker.Luck);
   const crit = CritChance(Attacker.Skill, Weapon.Critical_rate);
-  const dmg = Damage(Attacker.Attack, Weapon, Defender.Name);
+  let dmg = Damage(Attacker.Attack, Weapon, Defender.Name);
+  let dmg_mod=Attacker.Attack+Weapon.Might;
+  [hit,dmg_mod]=classAdvantageModifiers(hit,dmg_mod,Weapon,Defender);
+  dmg=dmg-Attacker.Attack-Weapon.Might+dmg_mod;
   const critEvd = Attacker.Luck;
   const statArray = [hit, avoid, crit, dmg, critEvd];
   return statArray;
@@ -45,7 +48,44 @@ export function levelUp(stat, level, growth) {
   return stat;
 }
 
-export function leveledChar(character, level) {
+export function leveledCharAve(character, level) {
+  const charHP = Math.floor(character.HP + (level - 1) * character.HpGrowth);
+  let charAtk;
+  if (character.Strength) {
+    charAtk = Math.floor(character.Strength+(level - 1)* character.StrGrowth);
+  } else if (character.Magic) {
+    charAtk = Math.floor(character.Magic+(level - 1)* character.MagGrowth);
+  }
+  const charSkl = Math.floor(
+    character.Skill + (level - 1) * character.SklGrowth
+  );
+  const charSpd = Math.floor(
+    character.Speed + (level - 1) * character.SpdGrowth
+  );
+  const charLck = Math.floor(
+    character.Luck + (level - 1) * character.LckGrowth
+  );
+  const charDef = Math.floor(
+    character.Defence + (level - 1) * character.DefGrowth
+  );
+  const charRes = Math.floor(
+    character.Resistance + (level - 1) * character.ResGrowth
+  );
+  const levelChar = {
+    ID: character.ID,
+    Name: character.Name,
+    HP: charHP,
+    Attack: charAtk,
+    Skill: charSkl,
+    Speed: charSpd,
+    Luck: charLck,
+    Defence: charDef,
+    Resistance: charRes,
+  };
+  return levelChar;
+}
+
+export function leveledCharRand(character, level) {
   const charHP = levelUp(character.HP, level, character.HpGrowth);
   let charAtk;
   if (character.Strength) {
@@ -79,7 +119,9 @@ export function outputText(init, damage, hit, crit, effective) {
       randNum = Math.random() * 100;
       if (randNum < crit) {
         return [
-          `Unit 1 lands critical hit on unit 2! Unit 1 deals ${damage * 3} damage. `,
+          `Unit 1 lands critical hit on unit 2! Unit 1 deals ${
+            damage * 3
+          } damage. `,
           true,
           true,
         ];
@@ -98,7 +140,9 @@ export function outputText(init, damage, hit, crit, effective) {
       randNum = Math.random() * 100;
       if (randNum < crit) {
         return [
-          `Unit 2 lands critical hit on unit 1! Unit 2 deals ${damage * 3} damage. `,
+          `Unit 2 lands critical hit on unit 1! Unit 2 deals ${
+            damage * 3
+          } damage. `,
           true,
           true,
         ];
@@ -111,6 +155,36 @@ export function outputText(init, damage, hit, crit, effective) {
       }
     } else {
       return [`Unit 2 attacks unit 1 and missed. `, false, false];
-    };
+    }
   }
+}
+export function classAdvantageModifiers(damage, hit, weapon, defender) {
+  if (
+    (weapon.Type === "Physical 1" || weapon.Type === "Physical 2") &&
+    defender.Name === "Steel Armor"
+  ) {
+    damage = Math.ceil(damage * 0.7);
+  }
+  if (
+    (weapon.Type === "Physical 1" ||
+      weapon.Type === "Fire" ||
+      weapon.Type === "Electric") &&
+    defender.Name === "Dragonkind"
+  ) {
+    damage = Math.ceil(damage * 0.8);
+  }
+  if (weapon.Type === "Fire" && defender.Name === "Steel Armor") {
+    damage = Math.floor(damage * 1.2);
+    hit += 15;
+  }
+  if (weapon.Type === "Electric" && defender.Name === "Flying Rider") {
+    damage = Math.floor(damage * 1.2);
+    hit += 15;
+  }
+  if (weapon.Type === "Ice" && defender.Name === "Dragonkind") {
+    damage = Math.floor(damage * 1.2);
+    hit += 15;
+  }
+
+  return [damage, hit];
 }
