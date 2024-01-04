@@ -63,8 +63,18 @@ export default function Battle() {
   const [result, setResult] = useState([]);
   const [winRatio, setWinRatio] = useState([]);
 
-  const stat1 = Calculation.getStatistics(char1, char2, EquipStat[weaponID1]);
-  const stat2 = Calculation.getStatistics(char2, char1, EquipStat[weaponID2]);
+  const stat1 = Calculation.getStatistics(
+    char1,
+    char2,
+    EquipStat[weaponID1],
+    EquipStat[weaponID2]
+  );
+  const stat2 = Calculation.getStatistics(
+    char2,
+    char1,
+    EquipStat[weaponID2],
+    EquipStat[weaponID1]
+  );
   let dmg1 = stat1[3];
   let dmg2 = stat2[3];
   let hit1 = stat1[0] - stat2[1];
@@ -83,7 +93,7 @@ export default function Battle() {
   } else if (isDouble2 || weaponID2 === "10" || weaponID2 === "16") {
     hitCount2 = "x2";
   }
-  
+
   if (ClassStat[classID1].Strength) {
     dmg1 = dmg1 - char2.Defence;
     if (dmg1 < 0) {
@@ -95,7 +105,7 @@ export default function Battle() {
       dmg1 = 0;
     }
   }
-  
+
   if (ClassStat[classID2].Strength) {
     dmg2 = dmg2 - char1.Defence;
     if (dmg2 < 0) {
