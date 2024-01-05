@@ -195,7 +195,7 @@ export function classAdvantageModifiers(
   }
 
 
-  //Weapon biangle
+  //Weapon triangle
   if (weapon1.Type==="Physical 1" && weapon1.Name !== "Mud Shot" && weapon2.Type==="Physical 2"){
     damage -=1;
     hit -=15;
@@ -213,6 +213,14 @@ export function classAdvantageModifiers(
   if (weapon1.Type==="Physical 2" && weapon2.Name === "Mud Shot"){
     damage -=1;
     hit -=15;
+  }
+  if (weapon1.Name === "Mud Shot" && weapon2.Type==="Physical 1"){
+    damage -=1;
+    hit -=15;
+  }
+  if (weapon1.Type==="Physical 1" && weapon2.Name === "Mud Shot"){
+    damage +=1;
+    hit +=15;
   }
 
   //Fire magic super effective against Steel Armor
