@@ -16,6 +16,13 @@ function SuperEffectiveMultiplier(weapon, target) {
       return 3;
     }
   }
+  if (
+    (weapon.Type === "Fire" && target === "Steel Armor") ||
+    (weapon.Type === "Electric" && target === "Flying Rider") ||
+    (weapon.Type === "Ice" && target === "Dragonkind Armor")
+  ) {
+    return 3;
+  }
   return 1;
 }
 function Damage(attack, weapon, target) {
@@ -181,6 +188,7 @@ export function classAdvantageModifiers(
   //Steel Armor resisting physical damage
   if (
     (weapon1.Type === "Physical 1" || weapon1.Type === "Physical 2") &&
+    weapon1.Name !== "Brick Break" &&
     defender.Name === "Steel Armor"
   ) {
     damage = Math.ceil(damage * 0.8);
@@ -194,52 +202,58 @@ export function classAdvantageModifiers(
     damage = Math.ceil(damage * 0.8);
   }
 
-
   //Weapon triangle
-  if (weapon1.Type==="Physical 1" && weapon1.Name !== "Mud Shot" && weapon2.Type==="Physical 2"){
-    damage -=1;
-    hit -=15;
+  if (
+    weapon1.Type === "Physical 1" &&
+    weapon1.Name !== "Mud Shot" &&
+    weapon2.Type === "Physical 2"
+  ) {
+    damage -= 1;
+    hit -= 15;
   }
-  if (weapon1.Type==="Physical 2" && weapon2.Name !== "Mud Shot" && weapon2.Type==="Physical 1"){
-    damage +=1;
-    hit +=15;
+  if (
+    weapon1.Type === "Physical 2" &&
+    weapon2.Name !== "Mud Shot" &&
+    weapon2.Type === "Physical 1"
+  ) {
+    damage += 1;
+    hit += 15;
   }
 
   //Mud Shot reaver
-  if (weapon1.Name === "Mud Shot" && weapon2.Type==="Physical 2"){
-    damage +=1;
-    hit +=15;
+  if (weapon1.Name === "Mud Shot" && weapon2.Type === "Physical 2") {
+    damage += 1;
+    hit += 15;
   }
-  if (weapon1.Type==="Physical 2" && weapon2.Name === "Mud Shot"){
-    damage -=1;
-    hit -=15;
+  if (weapon1.Type === "Physical 2" && weapon2.Name === "Mud Shot") {
+    damage -= 1;
+    hit -= 15;
   }
-  if (weapon1.Name === "Mud Shot" && weapon2.Type==="Physical 1"){
-    damage -=1;
-    hit -=15;
+  if (weapon1.Name === "Mud Shot" && weapon2.Type === "Physical 1") {
+    damage -= 1;
+    hit -= 15;
   }
-  if (weapon1.Type==="Physical 1" && weapon2.Name === "Mud Shot"){
-    damage +=1;
-    hit +=15;
-  }
-
-  //Fire magic super effective against Steel Armor
-  if (weapon1.Type === "Fire" && defender.Name === "Steel Armor") {
-    damage = Math.floor(damage * 1.2);
+  if (weapon1.Type === "Physical 1" && weapon2.Name === "Mud Shot") {
+    damage += 1;
     hit += 15;
   }
 
-  //Electric magic super effective against Flying Rider
-  if (weapon1.Type === "Electric" && defender.Name === "Flying Rider") {
-    damage = Math.floor(damage * 1.3);
-    
-  }
+  // //Fire magic super effective against Steel Armor
+  // if (weapon1.Type === "Fire" && defender.Name === "Steel Armor") {
+  //   damage = Math.floor(damage * 1.2);
+  //   hit += 15;
+  // }
 
-  //Ice magic super effective against Dragonkind
-  if (weapon1.Type === "Ice" && defender.Name === "Dragonkind") {
-    damage = Math.floor(damage * 1.2);
-    hit += 15;
-  }
+  // //Electric magic super effective against Flying Rider
+  // if (weapon1.Type === "Electric" && defender.Name === "Flying Rider") {
+  //   damage = Math.floor(damage * 1.3);
+  // }
+
+  // //Ice magic super effective against Dragonkind
+  // if (weapon1.Type === "Ice" && defender.Name === "Dragonkind") {
+  //   damage = Math.floor(damage * 1.2);
+  //   hit += 15;
+  // }
 
   return [hit, damage];
 }
